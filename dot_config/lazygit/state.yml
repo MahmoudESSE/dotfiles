@@ -1,0 +1,22 @@
+lastupdatecheck: 0
+recentrepos:
+- /home/mahmoudesse/dev/plugin/marky.nvim
+- /home/mahmoudesse/dev/plugin//marky.nvim
+- /home/mahmoudesse/dev/web/snapnote
+- /home/mahmoudesse/dev/web/snapnote/
+- /home/mahmoudesse/dev/web/calc/
+- /home/mahmoudesse/dev/cli/create-t3-app
+- /home/mahmoudesse/src/dotfiles
+- /home/mahmoudesse/dev/cli/aoc/aoc-cpp/
+- /home/mahmoudesse/.config/nvim/lua/user
+- /home/mahmoudesse/src/dotfiles/
+- /home/mahmoudesse/dev/cli/adventofcode-2023
+- /home/mahmoudesse/dev/cli/adventofcode-2023/
+- /home/mahmoudesse/dev/web/next-tori
+- /home/mahmoudesse/dev/web/next-tori/
+- /home/mahmoudesse/dev/cli/prolog
+startuppopupversion: 5
+customcommandshistory:
+- 'fix: remove just'
+hidecommandlog: false
+ignorewhitespaceindiffview: false

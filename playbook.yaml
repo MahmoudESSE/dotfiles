@@ -1,0 +1,147 @@
+---
+- name: Initial play
+  hosts: localhost
+  tasks:
+    - name: Ping my host
+      ansible.builtin.ping:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: Hello World
+
+    - name: Setup git
+      ansible.builtin.pacman:
+        name: git
+        state: latest
+
+    - name: Setup github-cli
+      ansible.builtin.pacman:
+        name: github-cli
+        state: latest
+
+    - name: Setup bat
+      ansible.builtin.pacman:
+        name: bat 
+        state: latest
+
+    - name: Setup zoxide
+      ansible.builtin.pacman:
+        name: zoxide
+        state: latest
+
+    - name: Setup eza
+      ansible.builtin.pacman:
+        name: eza
+        state: latest
+
+    - name: Setup tmux
+      ansible.builtin.pacman:
+        name: tmux
+        state: latest
+
+    - name: Setup bottom
+      ansible.builtin.pacman:
+        name: bottom
+        state: latest
+
+    - name: Setup lf
+      ansible.builtin.pacman:
+        name: lf
+        state: latest
+      become: true
+      become_user: mahmoudesse
+
+    - name: Setup dust
+      ansible.builtin.pacman:
+        name: dust
+        state: latest
+      become: true
+      become_user: mahmoudesse
+      become_method: sudo
+
+    - name: Setup ripgrep
+      ansible.builtin.pacman:
+        name: ripgrep
+        state: latest
+
+    - name: Setup fd
+      ansible.builtin.pacman:
+        name: fd
+        state: latest
+
+    - name: Setup alacritty 
+      ansible.builtin.pacman:
+        name: alacritty
+        state: latest
+
+    - name: Create repo src
+      ansible.builtin.file:
+        path: ~/src
+        state: directory
+
+    - name: Setup paru
+      ansible.builtin.git:
+        clone: yes 
+        repo: https://aur.archlinux.org/paru.git
+        dest: ~/src/paru
+
+    - name: Setup just
+      ansible.builtin.pacman:
+        name: just
+        state: latest
+      become: true
+      become_user: mahmoudesse
+      become_method: sudo
+
+    - name: Setup leftwm
+      ansible.builtin.pacman:
+        name: leftwm
+        state: latest
+      become: true
+      become_user: mahmoudesse
+      become_method: sudo
+
+    - name: Clone leftwm-theme
+      ansible.builtin.git:
+        clone: yes
+        repo: https://github.com/leftwm/leftwm-theme
+        dest: ~/src/leftwm-theme
+
+    - name: Build leftwm-theme
+      ansible.builtin.shell:
+        cmd: cd ~/src/leftwm-theme && cargo build --release
+
+    - name: Check if .local/leftwm-theme exists
+      stat:
+        path: ~/.local/bin/leftwm-theme
+      register: leftwm_theme
+
+    - name: Install leftwm-theme
+      ansible.builtin.command:
+        cmd: ln -s ~/src/leftwm-theme/target/release/leftwm-theme ~/.local/bin/leftwm-theme        
+      become: true
+      become_user: mahmoudesse
+      become_method: sudo
+      when: "not leftwm_theme.stat.exists"
+
+    # TODO: fix nvm command not found
+
+    # - name: Check if .nvm exists
+    #   stat:
+    #     path: ~/.nvm
+    #   register: nvm
+    #
+    # - name: Setup nvm
+    #   ansible.builtin.command:
+    #     cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    #   when: "not nvm.stat.exists"
+    #
+    #
+    # - name: Install latest node version
+    #   ansible.builtin.shell:
+    #     cmd: nvm install --lts
+    #
+    # - name: Use latest node version
+    #   ansible.builtin.command:
+    #     cmd: nvm use --lts
+

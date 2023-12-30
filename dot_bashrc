@@ -2,45 +2,89 @@
 # ~/.bashrc
 #
 
-# If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias ll='eza -alhXibgmnMS --total-size --group-directories-first'
-alias c='clear'
-alias src='source $HOME/.bashrc'
-alias nv='nvim'
+# if command -v tmux &>/dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+# 	tmux a -t default || exec tmux new -s default && exit
+# fi
 
+########################################
+# Completions
+########################################
 
-PS1='[\u@\h \W]\$ '
+if [ -d "$HOME/.bash_completions/completions" ]; then
+	for file in "$HOME/.bash_completions/completions"/*; do
+		[ -r "$file" ] && source "$file"
+	done
+fi
+
+[[ -f "/usr/share/bash-completion/bash_completion" ]] && source "/usr/share/bash-completion/bash_completion"
+
+[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+if type -P rustup >/dev/null; then
+	eval "$(rustup completions bash)"       # for rustup
+	eval "$(rustup completions bash cargo)" # for cargo
+fi
+
+########################################
+# Paths
+########################################
+
+export PATH="$HOME/.local/neovim/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+
+source "$HOME/.cargo/env"
+
+export PATH="$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH"
+
+########################################
+# Enviromental Variables
+########################################
 
 export PAGER=nvimpager
 
-eval "$(zoxide init bash)"
-
 eval "$(starship init bash)"
 
-. "$HOME/.cargo/env"
+eval "$(zoxide init bash)"
 
-[[ "$PS1" && -f "/usr/share/bash-completion/bash_completion" ]] && source "/usr/share/bash-completion/bash_completion" 
+eval "$(register-python-argcomplete cz)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" # This loads nvm
 
 # pnpm
 export PNPM_HOME="/home/mahmoudesse/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-PATH="/home/mahmoudesse/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/mahmoudesse/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/mahmoudesse/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/mahmoudesse/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/mahmoudesse/perl5"; export PERL_MM_OPT;
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
 
-export PATH="$PATH:/usr/local/go/bin"
+########################################
+# Aliases
+########################################
+
+alias ll='eza -alh --group-directories-first'
+alias ls='ls --color=auto'
+alias grep='grep --colour=auto'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'
+alias c='clear'
+alias nv='nvim'
+alias nsrc='$HOME/.local/neovim/bin/nvim $HOME/.bashrc'
+alias src='source $HOME/.bashrc'
+alias tsrc='tmux source-file $HOME/.tmux.conf'
+alias tmux="TERM=screen-256color-bce tmux"
+
+########################################
+# TMUX & SSH
+########################################
+
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/bash/__tabtab.bash ] && . ~/.config/tabtab/bash/__tabtab.bash || true

@@ -1,0 +1,9 @@
+customCommands:
+  - key: "<c-c>"
+    command: "convco commit"
+    context: "files"
+    subprocess: true
+    loadingText: "opening commitizen commit tool"
+    description: "commit with commitizen"
+    stream: false
+    showOutput: false
