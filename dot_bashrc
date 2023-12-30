@@ -1,0 +1,46 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias ll='eza -alhXibgmnMS --total-size --group-directories-first'
+alias c='clear'
+alias src='source $HOME/.bashrc'
+alias nv='nvim'
+
+
+PS1='[\u@\h \W]\$ '
+
+export PAGER=nvimpager
+
+eval "$(zoxide init bash)"
+
+eval "$(starship init bash)"
+
+. "$HOME/.cargo/env"
+
+[[ "$PS1" && -f "/usr/share/bash-completion/bash_completion" ]] && source "/usr/share/bash-completion/bash_completion" 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/home/mahmoudesse/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+PATH="/home/mahmoudesse/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/mahmoudesse/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/mahmoudesse/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/mahmoudesse/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/mahmoudesse/perl5"; export PERL_MM_OPT;
+
+export PATH="$PATH:/usr/local/go/bin"
